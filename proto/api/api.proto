@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package api;
+
+import "google/api/annotations.proto";
+
+option go_package = "github.com/anthonycorletti/go-grpc-gateway-template/proto/api";
+
+service Messenger {
+  rpc SendMessage (RequestContent) returns (ResponseContent) {
+    option (google.api.http) = {
+      post: "/message"
+      body: "*"
+    };
+  }
+}
+
+message RequestContent {
+  string name = 1;
+}
+
+message ResponseContent {
+  string message = 1;
+}

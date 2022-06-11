@@ -25,4 +25,8 @@ import (
 	_ "github.com/estesp/manifest-tool/v2/cmd/manifest-tool"
 	_ "github.com/golangci/golangci-lint"
 	_ "github.com/google/go-licenses"
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway"
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2"
+	_ "google.golang.org/grpc/cmd/protoc-gen-go-grpc"
+	_ "google.golang.org/protobuf/cmd/protoc-gen-go"
 )

@@ -28,13 +28,13 @@ MAKEFLAGS += --warn-undefined-variables
 .SUFFIXES:
 
 # The binaries to build (just the basenames)
-BINS := myapp-1 myapp-2
+BINS := api
 
 # The platforms we support.
 ALL_PLATFORMS := linux/amd64 linux/arm linux/arm64 linux/ppc64le linux/s390x windows/amd64
 
 # Where to push the docker images.
-REGISTRY ?= example.com
+REGISTRY ?= gcr.io
 
 # This version-strategy uses git tags to set the version string
 VERSION ?= $(shell git describe --tags --always --dirty)
@@ -116,7 +116,7 @@ OUTBINS = $(foreach bin,$(BINS),bin/$(OS)_$(ARCH)/$(bin)$(BIN_EXTENSION))
 build: $(OUTBINS)
 	echo
 
-# Directories that we need created to build/test.
+# Directories that we need created to scripts/test.
 BUILD_DIRS := bin/$(OS)_$(ARCH)                   \
               bin/tools                           \
               .go/bin/$(OS)_$(ARCH)               \
@@ -173,7 +173,7 @@ go-build: | $(BUILD_DIRS)
 	        VERSION=$(VERSION)                                  \
 	        MOD=$(MOD)                                          \
 	        GOFLAGS=$(GOFLAGS)                                  \
-	        ./build/build.sh ./...                              \
+	        ./scripts/build.sh ./...                              \
 	    "
 
 # Example: make shell CMD="-c 'date > datefile'"
@@ -273,7 +273,7 @@ version: # @HELP outputs the version string
 version:
 	echo $(VERSION)
 
-test: # @HELP runs tests, as defined in ./build/test.sh
+test: # @HELP runs tests, as defined in ./scripts/test.sh
 test: | $(BUILD_DIRS)
 	docker run                                                  \
 	    -i                                                      \
@@ -294,7 +294,7 @@ test: | $(BUILD_DIRS)
 	        VERSION=$(VERSION)                                  \
 	        MOD=$(MOD)                                          \
 	        GOFLAGS=$(GOFLAGS)                                  \
-	        ./build/test.sh ./...                               \
+	        ./scripts/test.sh ./...                               \
 	    "
 
 lint: # @HELP runs golangci-lint
@@ -313,7 +313,7 @@ lint: | $(BUILD_DIRS)
 	    --env HTTPS_PROXY=$(HTTPS_PROXY)                        \
 	    $(BUILD_IMAGE)                                          \
 	    /bin/sh -c "                                            \
-	        ./build/lint.sh ./...                               \
+	        ./scripts/lint.sh ./...                               \
 	    "
 
 $(BUILD_DIRS):
