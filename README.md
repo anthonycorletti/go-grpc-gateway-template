@@ -1,3 +1,3 @@
 # go-grpc-gateway-template
 
-More coming soon.
+This template project is in it's early stages. It is a work in progress!
